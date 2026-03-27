@@ -1,4 +1,10 @@
 // Cart management
+const formatINR = (amount) => {
+    return "₹" + amount.toLocaleString("en-IN", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+};
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
 const cartCountEl = document.getElementById('cart-count');
@@ -38,7 +44,7 @@ function renderCartItems() {
             <img src="${item.image}" alt="${item.name}">
             <div class="cart-item-details">
                 <h4>${item.name}</h4>
-                <p>$${item.price.toFixed(2)}</p>
+                <p>${formatINR(item.price)}</p>
                 <div class="quantity-controls">
                     <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
                     <span>${item.quantity}</span>
@@ -56,9 +62,9 @@ function updateTotals() {
     const tax = subtotal * 0.10;
     const total = subtotal + tax;
 
-    subtotalEl.textContent = subtotal.toFixed(2);
-    taxEl.textContent = tax.toFixed(2);
-    totalEl.textContent = total.toFixed(2);
+    subtotalEl.textContent = formatINR(subtotal).replace("₹", "");
+taxEl.textContent = formatINR(tax).replace("₹", "");
+totalEl.textContent = formatINR(total).replace("₹", "");
 }
 
 // Add to cart
